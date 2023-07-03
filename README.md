@@ -32,19 +32,31 @@ The variable `ltn` is the length of the phone number, and is used to determine w
 
 ## Install
 
-This program was developed using Turbo C++ compiler on Windows XP. To run it on modern systems, you may need to use a DOS emulator like DOSBox. You can download Turbo C++ from [here](https://developerinsider.co/download-turbo-c-for-windows-7-8-8-1-and-windows-10-32-64-bit-full-screen/) and DOSBox from [here](https://www.dosbox.com/download.php?main=1).
+This program is revised using GNU C++ compiler on Windows 11 to run it on modern systems. You can install the GNU C++ via this command,
+
+```
+scoop install gcc
+```
+
+You may need to install [Scoop](https://scoop.sh/) before it.
 
 ## Build
 
-To compile a program using Turbo C++, you can use the command line utility **tcc**. For example, if your program is named **phomnemonic.cpp**, you can type **tcc phomnemonic.cpp** in the command prompt to compile it. 
+To compile a program using GNU C++, you can use the command line utility **g++**. For example, if your program is named **phomnemonic.cpp**, you can type **g++ phomnemonic.cpp -o phomnemonic.exe** in the command prompt to compile it. 
 
-You may need to set up some environment variables to find header files and libraries. You can also use the Turbo C++ editor and press **Alt-F9** or go to the **Compile** tab and select **Compile** or **Build All**. 
+You may need to set up some environment variables to find header files and libraries. 
 
-If the compilation is successful, you will find an executable file with the same name as your program, such as **phomnemonic.exe**. You can run it using a DOS emulator like DOSBox or directly from the Turbo C++ editor by pressing **Ctrl-F9** or going to the **Run** tab and selecting **Run**.
+If the compilation is successful, you will find an executable file with the same name as your program, such as **phomnemonic.exe**. You can run it using command-prompt or powershell.
 
 ## Usage
 
-To compile the program, you can use the command line utility **tcc** or the Turbo C++ editor. To run the program, you can use the command line or the Turbo C++ editor. Now create **input.txt** file for the program read a telephone number and then generate all possible mnemonics for it. The output will be saved in a file named **output.txt**.
+Create **input.txt** file for the program read a telephone number and then generate all possible mnemonics for it. Then, execute the program via running the command,
+
+```
+.\phomnemonic.exe
+```
+
+The output will be saved in a file named **output.txt**. 
 
 ## License
 
