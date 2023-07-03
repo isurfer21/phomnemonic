@@ -42,7 +42,11 @@ You may need to install [Scoop](https://scoop.sh/) before it.
 
 ## Build
 
-To compile a program using GNU C++, you can use the command line utility **g++**. For example, if your program is named **phomnemonic.cpp**, you can type **g++ phomnemonic.cpp -o phomnemonic.exe** in the command prompt to compile it. 
+To compile a program using GNU C++, you can use the command line utility **g++**. For example, if your program is named `phomnemonic.cpp`, you can type this command prompt to compile the program. 
+
+```
+g++ phomnemonic.cpp -o phomnemonic.exe
+```
 
 You may need to set up some environment variables to find header files and libraries. 
 
