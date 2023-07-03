@@ -8,12 +8,15 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <filesystem> 
 using namespace std;
+namespace fs = std::filesystem;
 
 long calcPermComb(char *, int);
 void genMnemonics(char *, string);
 bool isValidFilename(string);
 bool isValidPhoneNumber(string);
+bool checkDirectory(string);
 void showHelp();
 void showVersion();
 
@@ -28,7 +31,11 @@ int main(int argc, char const *argv[]) {
         if (isValidPhoneNumber(argv[1])) {
           char itn[MAX];
           strcpy(itn, argv[1]);
-          genMnemonics(itn, argv[3]);
+          if (checkDirectory(argv[3])) {
+            genMnemonics(itn, argv[3]);
+          } else {
+            cout << "Error: Output file's directory path doesn't exist." << endl;
+          }
         } else {
           cout << "Error: Invalid phone number." << endl;
         }
@@ -50,7 +57,12 @@ int main(int argc, char const *argv[]) {
       if (isValidPhoneNumber(argv[1])) {
         char itn[MAX];
         strcpy(itn, argv[1]);
-        genMnemonics(itn, "output.txt");
+        string ofp = "output.txt";
+        if (checkDirectory(ofp)) {
+          genMnemonics(itn, ofp);
+        } else {
+          cout << "Error: Output file's directory path doesn't exist." << endl;
+        }
       } else {
         cout << "Error: Invalid phone number." << endl;
       }
@@ -274,6 +286,22 @@ bool isValidPhoneNumber(string s) {
   }
   // If none of the above conditions are met, return true
   return true;
+}
+
+// A function that checks if the directory of a given file exists
+bool checkDirectory(string filename) {
+  // Convert the filename to a path object
+  fs::path p = filename;
+  // Get the absolute path of the file
+  fs::path abs = fs::absolute(p);
+  // Get the directory of the file
+  fs::path dir = p.parent_path();
+  // Check if the directory exists and is a directory
+  if (fs::exists(dir) && fs::is_directory(dir)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void showHelp() {
