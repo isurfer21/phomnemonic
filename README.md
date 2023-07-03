@@ -52,8 +52,6 @@ You may need to set up some environment variables to find header files and libra
 
 If the compilation is successful, you will find an executable file with the same name as your program, such as **phomnemonic.exe**. You can run it using command-prompt or powershell.
 
-Here's a possible improved version of the content:
-
 ## Usage
 
 The `phomnemonic.exe` is a program that generates all possible mnemonics for a given telephone number. To run the program, you need to provide the telephone number as a command-line argument. You can also specify an output filename to save the mnemonics in a tab-separated format. 
@@ -90,6 +88,50 @@ To generate and save the mnemonics, use the `-o` or `--output` option, followed 
 ```
 
 Note: If you do not provide an output filename, the mnemonics will be saved in a file named **output.txt** by default.
+
+## WebAssembly
+
+WebAssembly (Wasm) is a **low-level assembly-like language** that can run in modern web browsers with **near-native performance**. It is a **portable compilation target** for programming languages such as C/C++, C#, and Rust, enabling them to run on the web for client and server applications. WebAssembly is also designed to work alongside JavaScript, allowing both languages to share functionality and access web APIs.
+
+WebAssembly has a **compact binary format** that can be loaded and executed efficiently by web browsers. It also has a **textual format** that can be used for debugging, testing, and writing programs by hand. WebAssembly is a **memory-safe** and **sandboxed** execution environment that follows the same-origin and permissions policies of the web.
+
+WebAssembly is developed as an open standard by the W3C WebAssembly Working Group and Community Group, with active participation from all major browser vendors. You can find developer reference documentation for WebAssembly on MDN's WebAssembly pages.
+
+### Prerequisite
+
+To run this project, you need to install the [WASI SDK](https://github.com/WebAssembly/wasi-sdk) and [wasmtime](https://wasmtime.dev/).
+
+- The WASI SDK provides a C/C++ compiler toolchain for WebAssembly. 
+  - Make sure it does not conflict with the [GNU GCC](https://gcc.gnu.org/) compiler on your system. One way to avoid this is to make the GNU GCC binaries global and wrap the WASI SDK binaries under a `wasi` command using this gist [wasi.cmd](https://gist.github.com/isurfer21/7199f72346f6cddf83773a9457c716fa). This way, you can use both compilers on the same system without conflict.
+- Wasmtime is a runtime for running WASI-based wasm files.
+
+### Build 
+
+To compile the code and generate a wasm file, use this command:
+
+```
+> wasi clang++ .\phomnemonic.cpp -o .\phomnemonic.wasm
+```
+
+### Usage
+
+To view the help menu, use this command:
+
+```
+> wasmtime .\phomnemonic.wasm -- -h
+```
+
+To view the version details, use this command:
+
+```
+> wasmtime .\phomnemonic.exe -- -v
+```
+
+To generate and save the mnemonics for a phone number, use this command:
+
+```
+> wasmtime .\phomnemonic.wasm -- <phone_number> -o <output.tsv>
+```
 
 ## License
 
