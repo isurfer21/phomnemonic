@@ -1,4 +1,7 @@
-// This software finds an all possible equivalent string of characters for a telephone number.
+/*
+ @file    phomnemonics.cpp
+ @brief   The program generates all the possible mnemonics for a phone number.
+*/
 
 #include <cmath>
 #include <fstream>
@@ -7,29 +10,65 @@
 #include <iostream>
 using namespace std;
 
-long pc(char *, int);
+long calcPermComb(char *, int);
+void genMnemonics(char *, string);
+bool isValidFilename(string);
+bool isValidPhoneNumber(string);
+void showHelp();
+void showVersion();
+
 const int MAX = 17;
 
 int main(int argc, char const *argv[]) {
-  ofstream out;
-  ifstream infile;
+  // check if the argument is passed
+  if (argc == 4) {
+    // compare the argument with the telephone number and output filename
+    if (strcmp(argv[2], "-o") == 0 || strcmp(argv[2], "--output") == 0) { 
+      if (isValidFilename(argv[3])) {
+        if (isValidPhoneNumber(argv[1])) {
+          char itn[MAX];
+          strcpy(itn, argv[1]);
+          genMnemonics(itn, argv[3]);
+        } else {
+          cout << "Error: Invalid phone number." << endl;
+        }
+      } else {
+        cout << "Error: Invalid output filename." << endl;  
+      }
+    } else {
+      cout << "Error: Unknown parameter is passed." << endl;
+    }
+  } else if (argc == 3) {
+    cout << "Error: Few missing parameters." << endl;
+  } else if (argc == 2) {
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+      showHelp();
+    } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
+      showVersion();
+    } else {
+      // compare the argument with the telephone number
+      if (isValidPhoneNumber(argv[1])) {
+        char itn[MAX];
+        strcpy(itn, argv[1]);
+        genMnemonics(itn, "output.txt");
+      } else {
+        cout << "Error: Invalid phone number." << endl;
+      }
+    }
+  } else {
+    cout << "Error: Missing parameters." << endl;
+  }
 
-  char tn[MAX], a[MAX], bos[MAX];
+  return 0;
+}
+
+void genMnemonics(char *tn, string ofp) {
+  ofstream out;
+
+  char a[MAX], bos[MAX];
   int y[MAX];
   int ltn, ctr = 0;
 
-  infile.open(".\\input.txt");
-  if (!infile) {
-    cout << "Can't open the file!";
-    exit(0);
-  }
-  while (!infile.eof()) {
-    for (int i = 0; i < 15; i++) {
-      infile >> tn[i];
-    }
-  }
-  infile.close();
-  
   int ktr = 0;
   ltn = strlen(tn);
   for (int kctri = 0; kctri < ltn; kctri++) {
@@ -41,18 +80,17 @@ int main(int argc, char const *argv[]) {
   }
   ltn = ktr;
 
-  out.open(".\\output.txt");
+  cout << "The entered phone number is: ";
+  for (int i = 0; i < ltn; i++) {
+    cout << tn[i];
+  }
+  cout << "\nThe total number of possible mnemonics for this phone number is: " << calcPermComb(tn, ltn) << endl;
+  cout << "The length of the phone number is: " << ltn << endl;
+  cout << "All the possible mnemonics are saved in the '" << ofp << "' file." << endl;
 
-  out << "\nThis software finds an all possible equivalent string of characters for a telephone number.\n";
-  out << "\nCopyright(c)-2005 by Abhishek Kumar\n";
-  out << "\nTel no : ";
-  for (int i = 0; i < ltn; i++) out << tn[i];
-  out << "\nPossible permutation-combination: " << pc(tn, ltn);
-  out << "\nLength of tel.ph.no.: " << ltn;
   for (int x = 0; x <= MAX; x++) {
     y[x] = 1;
   }
-  out << "\nPosible string of characters for the given tel.ph.no.: \n" << endl;
 
   for (int z = ltn - 1; z >= 0; --z) {
     int i = 15 - ltn + z;
@@ -99,6 +137,8 @@ int main(int argc, char const *argv[]) {
         y[i] = 1;
     }
   }
+
+  out.open(ofp);
 
   for (int b = 0; b < y[0]; b++) {
     a[0] += b;
@@ -173,10 +213,9 @@ int main(int argc, char const *argv[]) {
   }
 
   out.close();
-  return 0;
 }
 
-long pc(char *tn, int l) {
+long calcPermComb(char *tn, int l) {
   int i, c1 = 0, c2 = 0;
   long double N;
   for (i = 0; i <= l; i++) (tn[i] == '1' || tn[i] == '0') ? c1++ : c1;
@@ -185,4 +224,72 @@ long pc(char *tn, int l) {
   l = l - c2;
   N = pow(3, l) * pow(4, c2);
   return N;
+}
+
+// A function to check if the filename is valid and have some extension
+bool isValidFilename(string filename) {
+  // If the filename is empty, return false
+  if (filename.empty()) {
+    return false;
+  }
+  // Find the position of the last dot in the filename
+  size_t dotPos = filename.find_last_of('.');
+  // If there is no dot, return false
+  if (dotPos == string::npos) {
+    return false;
+  }
+  // Get the extension of the filename
+  string ext = filename.substr(dotPos + 1);
+  // If the extension is empty, return false
+  if (ext.empty()) {
+    return false;
+  }
+  // Loop through each character of the extension
+  for (char c : ext) {
+    // If the character is not alphanumeric, return false
+    if (!isalnum(c)) {
+      return false;
+    }
+  }
+  // If none of the above conditions are met, return true
+  return true;
+}
+
+// A function to check the input string for valid phone number
+bool isValidPhoneNumber(string s) {
+  // If the string is empty, return false
+  if (s.empty()) {
+    return false;
+  }
+  // If the string is not 10 characters long, return false
+  if (s.length() != 10) {
+    return false;
+  }
+  // Loop through each character of the string
+  for (char c : s) {
+    // If the character is not a digit, return false
+    if (!isdigit(c)) {
+      return false;
+    }
+  }
+  // If none of the above conditions are met, return true
+  return true;
+}
+
+void showHelp() {
+  // show the help menu
+  cout << "Usage:" << endl;
+  cout << " phomnemonic <phone_number>" << endl;
+  cout << " phomnemonic <phone_number> --output <output_filename>" << endl << endl;
+  cout << "Options:" << endl;
+  cout << "-h, --help       Show this help message and exit" << endl;
+  cout << "-v, --version    Show the program version and exit" << endl;
+  cout << "-o, --output     Filename to save the output." << endl << endl;
+}
+
+void showVersion() {
+  // show the version info
+  cout << "Phomnemonic (v1.0.0)" << endl;
+  cout << "It creates all the possible alphanumeric mnemonics that correspond to a phone number." << endl;
+  cout << "Copyright (c) 2005 Abhishek Kumar. This work is licensed under the GNU GPL v3 or later." << endl << endl;
 }

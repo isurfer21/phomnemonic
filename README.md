@@ -35,7 +35,7 @@ The variable `ltn` is the length of the phone number, and is used to determine w
 This program is revised using GNU C++ compiler on Windows 11 to run it on modern systems. You can install the GNU C++ via this command,
 
 ```
-scoop install gcc
+> scoop install gcc
 ```
 
 You may need to install [Scoop](https://scoop.sh/) before it.
@@ -45,22 +45,51 @@ You may need to install [Scoop](https://scoop.sh/) before it.
 To compile a program using GNU C++, you can use the command line utility **g++**. For example, if your program is named `phomnemonic.cpp`, you can type this command prompt to compile the program. 
 
 ```
-g++ phomnemonic.cpp -o phomnemonic.exe
+> g++ phomnemonic.cpp -o phomnemonic.exe
 ```
 
 You may need to set up some environment variables to find header files and libraries. 
 
 If the compilation is successful, you will find an executable file with the same name as your program, such as **phomnemonic.exe**. You can run it using command-prompt or powershell.
 
+Here's a possible improved version of the content:
+
 ## Usage
 
-Create **input.txt** file for the program read a telephone number and then generate all possible mnemonics for it. Then, execute the program via running the command,
+The `phomnemonic.exe` is a program that generates all possible mnemonics for a given telephone number. To run the program, you need to provide the telephone number as a command-line argument. You can also specify an output filename to save the mnemonics in a tab-separated format. 
+
+To view the help menu, use the `-h` or `--help` option, as shown below:
 
 ```
-.\phomnemonic.exe
+> .\phomnemonic.exe -h
+
+Usage:
+ phomnemonic <phone_number>
+ phomnemonic <phone_number> --output <output_filename>
+
+Options:
+-h, --help       Show this help message and exit
+-v, --version    Show the program version and exit
+-o, --output     Filename to save the output.
 ```
 
-The output will be saved in a file named **output.txt**. 
+To view the version details, use the `-v` or `--version` option, as shown below:
+
+```
+> .\phomnemonic.exe -v
+
+Phomnemonic (v1.0.0)
+It creates all the possible alphanumeric mnemonics that correspond to a phone number.
+Copyright (c) 2005 Abhishek Kumar. This work is licensed under the GNU GPL v3 or later.
+```
+
+To generate and save the mnemonics, use the `-o` or `--output` option, followed by the output filename, as shown below:
+
+```
+> .\phomnemonic.exe <phone_number> -o <output.tsv>
+```
+
+Note: If you do not provide an output filename, the mnemonics will be saved in a file named **output.txt** by default.
 
 ## License
 
