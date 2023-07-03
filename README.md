@@ -130,8 +130,10 @@ To view the version details, use this command:
 To generate and save the mnemonics for a phone number, use this command:
 
 ```
-> wasmtime .\phomnemonic.wasm -- <phone_number> -o <output.tsv>
+> wasmtime .\phomnemonic.wasm --dir=. -- <phone_number> -o <output.tsv>
 ```
+
+Note that you may need to grant some permissions to your module, such as access to files or directories, using the `--dir` or `--preopen-dir` flags.
 
 ## License
 
